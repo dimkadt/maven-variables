@@ -1,0 +1,159 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycompany</groupId>
+    <artifactId>maven-variables</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>WebAppMaven</name>
+
+    <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+  
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>ru.yaal.maven</groupId>
+                <artifactId>write-text-files-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <files>
+                        <file>
+                            <path>target/environment.txt</path>
+                            <lines>
+                                <line>=== PROJECT PROPERTIES ===</line>
+                                <line>Name: ${project.name}</line>
+                                <line>ArtifactId: ${project.artifactId}</line>
+                                <line>Version: ${project.version}</line>
+                                <line>=== JAVA PROPERTIES ===</line>
+                                <line>Java vendor: ${java.vendor}</line>
+                                <line>Java version: ${java.version}</line>
+                                <line>Java home: ${java.home}</line>
+                                <line>JAVA_VERSION: ${env.JAVA_VERSION}</line>
+                                <line>=== OS ENVIRONMENT ===</line>
+                                <line>User dir: ${env.HOME}</line>
+                                <line>=== MAVEN ===</line>
+                                <line>MAVEN_OPTS: ${env.MAVEN_OPTS}</line>
+                                <line>command line args: ${env.MAVEN_CMD_LINE_ARGS}</line>
+                                <line>mvn version: ${env.MVN_VER}</line>
+                            </lines>
+                        </file>
+                    </files>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>write-text-files</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>write-text-files</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                            <configuration>
+                                <tasks>
+                                    <echo>Displaying 4 environment variables</echo>
+                                    <echo>[MAVEN_OPTS]: ${env.MAVEN_OPTS}</echo>
+                                    <echo>[CMD ARGS]: ${env.MAVEN_CMD_LINE_ARGS}</echo>
+                                    <echo>[MVN_VER]: ${env.MVN_VER}</echo>
+                                    <echo>[JAVA_VERSION]: ${env.JAVA_VERSION}</echo>
+                                </tasks>
+                            </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <endorseddirs>${endorsed.dir}</endorseddirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <webResources>
+                    <resource>
+                        <!-- this is relative to the pom.xml directory -->
+                        <directory>target</directory>
+                        <!-- there's no default value for this -->
+                            <include>**/*</include>
+                        <includes>
+                        </includes>
+                    </resource>
+                    <resource>
+                        <directory>target</directory>
+                        <includes>
+                            <include>*.txt</include>
+                        </includes>
+                    </resource>
+                    </webResources>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${endorsed.dir}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>javax</groupId>
+                                    <artifactId>javaee-endorsed-api</artifactId>
+                                    <version>6.0</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
