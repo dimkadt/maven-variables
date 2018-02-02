@@ -53,6 +53,7 @@
                                 <line>JAVA_VERSION: ${env.JAVA_VERSION}</line>
                                 <line>=== OS ENVIRONMENT ===</line>
                                 <line>User dir: ${env.HOME}</line>
+                                <line>User: ${USER} </line>
                                 <line>=== MAVEN ===</line>
                                 <line>MAVEN_OPTS: ${env.MAVEN_OPTS}</line>
                                 <line>command line args: ${env.MAVEN_CMD_LINE_ARGS}</line>
@@ -88,6 +89,7 @@
                                     <echo>[CMD ARGS]: ${env.MAVEN_CMD_LINE_ARGS}</echo>
                                     <echo>[MVN_VER]: ${env.MVN_VER}</echo>
                                     <echo>[JAVA_VERSION]: ${env.JAVA_VERSION}</echo>
+                                    <echo>[USER]: ${USER} </echo>
                                 </tasks>
                             </configuration>
                     </execution>
